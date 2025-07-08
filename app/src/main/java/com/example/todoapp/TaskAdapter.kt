@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.databinding.ItemTaskBinding
+import com.google.firebase.firestore.FirebaseFirestore
 
 class TaskAdapter(
     private var tasks: MutableList<Task>,
@@ -19,6 +20,19 @@ class TaskAdapter(
 
             binding.checkBoxDone.setOnCheckedChangeListener { _, isChecked ->
                 task.done = isChecked
+                // Save the new state to Firebase
+                FirebaseFirestore.getInstance()
+                    .collection("tasks")
+                    .whereEqualTo("description", task.description)
+                    .get()
+                    .addOnSuccessListener { snapshot ->
+                        for (doc in snapshot) {
+                            FirebaseFirestore.getInstance()
+                                .collection("tasks")
+                                .document(doc.id)
+                                .update("done", isChecked)
+                        }
+                    }
             }
 
             binding.root.setOnLongClickListener {
