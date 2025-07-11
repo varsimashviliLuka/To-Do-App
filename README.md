@@ -1,1 +1,1 @@
-პროექტზე მუშაობდნენ: ლუკა ვარსიმაშვილი და დავით ბურკაძე
+University Exam Project For Android Developlent Class
